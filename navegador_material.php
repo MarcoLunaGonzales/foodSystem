@@ -68,29 +68,60 @@ echo "<script language='Javascript'>
 			modo_vista=sel_vista.value;
 			location.href='navegador_material.php?vista='+modo_vista+'';
 		}
+		function duplicar(f)
+		{
+			var i;
+			var j=0;
+			var j_ciclo;
+			for(i=0;i<=f.length-1;i++)
+			{
+				if(f.elements[i].type=='checkbox')
+				{	if(f.elements[i].checked==true)
+					{	j_ciclo=f.elements[i].value;
+						j=j+1;
+					}
+				}
+			}
+			if(j>1)
+			{	alert('Debe seleccionar solamente un registro para duplicarlo.');
+			}
+			else
+			{
+				if(j==0)
+				{
+					alert('Debe seleccionar un registro para duplicarlo.');
+				}
+				else
+				{
+					location.href='duplicarProducto.php?cod_material='+j_ciclo+'&tipo=1';
+				}
+			}
+		}
+		
 		</script>";
 		
 	require("conexion.inc");
 	require('estilos.inc');
+	require("funciones.php");
 	
-	echo "<h1>Registro de Producto</h1>";
+	echo "<h1>Registro de Insumos y Productos</h1>";
 
 	echo "<form method='post' action=''>";
 	$sql="select m.codigo_material, m.descripcion_material, m.estado, 
-		(select e.nombre_empaque from empaques e where e.cod_empaque=m.cod_empaque), 
-		(select f.nombre_forma_far from formas_farmaceuticas f where f.cod_forma_far=m.cod_forma_far), 
+		(select e.nombre_grupo from grupos e where e.cod_grupo=m.cod_grupo), 
+		(select t.nombre_tipomaterial from tipos_material t where t.cod_tipomaterial=m.cod_tipomaterial), 
 		(select pl.nombre_linea_proveedor from proveedores p, proveedores_lineas pl where p.cod_proveedor=pl.cod_proveedor and pl.cod_linea_proveedor=m.cod_linea_proveedor),
-		(select t.nombre_tipoventa from tipos_venta t where t.cod_tipoventa=m.cod_tipoventa), m.cantidad_presentacion, m.principio_activo 
+		m.observaciones, imagen
 		from material_apoyo m
-		where m.estado='1' order by m.descripcion_material";
+		where m.estado='1' and m.cod_tipomaterial in (1,2) order by m.descripcion_material";
 	if($vista==1)
 	{	$sql="select m.codigo_material, m.descripcion_material, m.estado, 
-		(select e.nombre_empaque from empaques e where e.cod_empaque=m.cod_empaque), 
-		(select f.nombre_forma_far from formas_farmaceuticas f where f.cod_forma_far=m.cod_forma_far), 
+		(select e.nombre_grupo from grupos e where e.cod_grupo=m.cod_grupo), 
+		(select t.nombre_tipomaterial from tipos_material t where t.cod_tipomaterial=m.cod_tipomaterial), 
 		(select pl.nombre_linea_proveedor from proveedores p, proveedores_lineas pl where p.cod_proveedor=pl.cod_proveedor and pl.cod_linea_proveedor=m.cod_linea_proveedor),
-		(select t.nombre_tipoventa from tipos_venta t where t.cod_tipoventa=m.cod_tipoventa), m.cantidad_presentacion, m.principio_activo 
+		m.observaciones, imagen
 		from material_apoyo m
-		where m.estado='0' order by m.descripcion_material";
+		where m.estado='0' and m.cod_tipomaterial in (1,2) order by m.descripcion_material";
 	}
 	
 	//echo $sql;
@@ -110,12 +141,12 @@ echo "<script language='Javascript'>
 		<input type='button' value='Adicionar' name='adicionar' class='boton' onclick='enviar_nav()'>
 		<input type='button' value='Editar' name='Editar' class='boton' onclick='editar_nav(this.form)'>
 		<input type='button' value='Eliminar' name='eliminar' class='boton2' onclick='eliminar_nav(this.form)'>
+		<input type='button' value='Duplicar' name='Duplicar' class='boton' onclick='duplicar(this.form)'>
 		</div>";
 	
 	echo "<center><table class='texto'>";
-	echo "<tr><th>Indice</th><th>&nbsp;</th><th>Nombre Producto</th><th>Empaque</th>
-		<th>Cant.Presentacion</th><th>Forma Farmaceutica</th><th>Linea Distribuidor</th><th>Principio Activo</th><th>Tipo Venta</th>
-		<th>Accion Terapeutica</th></tr>";
+	echo "<tr><th>Indice</th><th>&nbsp;</th><th>Nombre Producto</th><th>Descripcion</th>
+		<th>Grupo</th><th>Tipo</th><th>Proveedor</th><th>Precio de Venta [Bs]</th><th>&nbsp;</th><th>&nbsp;</th></tr>";
 	
 	$indice_tabla=1;
 	while($dat=mysql_fetch_array($resp))
@@ -123,28 +154,24 @@ echo "<script language='Javascript'>
 		$codigo=$dat[0];
 		$nombreProd=$dat[1];
 		$estado=$dat[2];
-		$empaque=$dat[3];
-		$formaFar=$dat[4];
+		$grupo=$dat[3];
+		$tipoMaterial=$dat[4];
 		$nombreLinea=$dat[5];
-		$tipoVenta=$dat[6];
-		$cantPresentacion=$dat[7];
-		$principioActivo=$dat[8];
-		
-		$txtAccionTerapeutica="";
-		$sqlAccion="select a.nombre_accionterapeutica from acciones_terapeuticas a, material_accionterapeutica m
-			where m.cod_accionterapeutica=a.cod_accionterapeutica and 
-			m.codigo_material='$codigo'";
-		$respAccion=mysql_query($sqlAccion);
-		while($datAccion=mysql_fetch_array($respAccion)){
-			$nombreAccionTerX=$datAccion[0];
-			$txtAccionTerapeutica=$txtAccionTerapeutica." - ".$nombreAccionTerX;
-		}
+		$observaciones=$dat[6];
+		$imagen=$dat[7];
+		$precioVenta=precioVenta($codigo);
+		$precioVenta=$precioVenta;
 		
 		echo "<tr><td align='center'>$indice_tabla</td><td align='center'>
 		<input type='checkbox' name='codigo' value='$codigo'></td>
-		<td>$nombreProd</td><td>$empaque</td>
-		<td>$cantPresentacion</td><td>$formaFar</td>
-		<td>$nombreLinea</td><td>$principioActivo</td><td>$tipoVenta</td><td>$txtAccionTerapeutica</td></tr>";
+		<td>$nombreProd</td><td>$observaciones</td>
+		<td>$grupo</td>
+		<td>$tipoMaterial</td>
+		<td>$nombreLinea</td>
+		<td align='center'>$precioVenta</td>
+		<td><img src='imagenesprod/$imagen' width='200'></td>
+		<td><a href='reemplazarImagen.php?codigo=$codigo&nombre=$nombreProd'><img src='imagenes/change.png' width='40' title='Reemplazar Imagen'></a></td>
+		</tr>";
 		$indice_tabla++;
 	}
 	echo "</table></center><br>";
@@ -153,6 +180,7 @@ echo "<script language='Javascript'>
 		<input type='button' value='Adicionar' name='adicionar' class='boton' onclick='enviar_nav()'>
 		<input type='button' value='Editar' name='Editar' class='boton' onclick='editar_nav(this.form)'>
 		<input type='button' value='Eliminar' name='eliminar' class='boton2' onclick='eliminar_nav(this.form)'>
+		<input type='button' value='Duplicar' name='Duplicar' class='boton' onclick='duplicar(this.form)'>
 		</div>";
 		
 	echo "</form>";

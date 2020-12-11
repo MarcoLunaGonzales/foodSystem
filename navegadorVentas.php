@@ -63,7 +63,7 @@ function funOk(codReg,funOkConfirm)
                     }
                 });
             } else {
-                dlgA("#pnldlgA3","Informe","<div class='pnlalertar'>Introdusca el codigo de confirmacion.</div>",function(){},function(){});
+                dlgA("#pnldlgA3","Informe","<div class='pnlalertar'>Introduzca el codigo de confirmacion.</div>",function(){},function(){});
             }
         },function(){});
     });
@@ -155,13 +155,13 @@ function anular_salida(f)
         }
         else
         {   funOk(j_cod_registro,function() {
-                        location.href='anular_salida.php?codigo_registro='+j_cod_registro+'&grupo_salida=2';
+                        location.href='anular_venta.php?codigo_registro='+j_cod_registro;
             });
         }
     }
 }
 
-function cambiarCancelado(f)
+function editarTipoPago(f)
 {   var i;
     var j=0;
     var j_cod_registro, estado_preparado;
@@ -183,125 +183,16 @@ function cambiarCancelado(f)
     {   if(j==0)
         {   alert('Debe seleccionar un registro.');
         }
-        else
-		{      
+        else{   
 			funOk(j_cod_registro,function() {
-				location.href='cambiarEstadoCancelado.php?codigo_registro='+j_cod_registro+'';
-			});            
+                        location.href='editarTipoPago.php?codigo_registro='+j_cod_registro;
+            });
         }
     }
 }
 
-function cambiarNoEntregado(f)
-{   var i;
-    var j=0;
-    var j_cod_registro;
-    for(i=0;i<=f.length-1;i++)
-    {   if(f.elements[i].type=='checkbox')
-        {   if(f.elements[i].checked==true)
-            {   j_cod_registro=f.elements[i].value;
-                j=j+1;
-            }
-        }
-    }
-    if(j>1)
-    {   alert('Debe seleccionar solamente una Salida.');
-    }
-    else
-    {   if(j==0)
-        {   alert('Debe seleccionar una Salida.');
-        }
-        else
-        {   location.href='cambiarEstadoNoEntregado.php?codigo_registro='+j_cod_registro+'';
-        }
-    }
-}
-function cambiarNoCancelado(f)
-{   var i;
-    var j=0;
-    var j_cod_registro;
-    for(i=0;i<=f.length-1;i++)
-    {   if(f.elements[i].type=='checkbox')
-        {   if(f.elements[i].checked==true)
-            {   j_cod_registro=f.elements[i].value;
-                j=j+1;
-            }
-        }
-    }
-    if(j>1)
-    {   alert('Debe seleccionar solamente una Salida.');
-    }
-    else
-    {   if(j==0)
-        {   alert('Debe seleccionar una Salida.');
-        }
-        else
-        {   location.href='cambiarEstadoNoCancelado.php?codigo_registro='+j_cod_registro+'';
-        }
-    }
-}
 
-function imprimirNotas(f)
-{   var i;
-    var j=0;
-    datos=new Array();
-    for(i=0;i<=f.length-1;i++)
-    {   if(f.elements[i].type=='checkbox')
-        {   if(f.elements[i].checked==true)
-            {   datos[j]=f.elements[i].value;
-                j=j+1;
-            }
-        }
-    }
-    if(j==0)
-    {   alert('Debe seleccionar al menos una salida para imprimir la Nota.');
-    }
-    else
-    {   window.open('navegador_detallesalidamaterialResumen.php?codigo_salida='+datos+'','','scrollbars=yes,status=no,toolbar=no,directories=no,menubar=no,resizable=yes,width=1000,height=800');
-    }
-}
-function preparar_despacho(f)
-{   var i;
-    var j=0;
-    datos=new Array();
-    for(i=0;i<=f.length-1;i++)
-    {   if(f.elements[i].type=='checkbox')
-        {   if(f.elements[i].checked==true)
-            {   datos[j]=f.elements[i].value;
-                j=j+1;
-            }
-        }
-    }
-    if(j==0)
-    {   alert('Debe seleccionar al menos una salida para proceder a su preparado.');
-    }
-    else
-    {   location.href='preparar_despacho.php?datos='+datos+'&tipo_material=1&grupo_salida=2';
-    }
-}
-function enviar_datosdespacho(f)
-{   var i;
-    var j=0;
-    datos=new Array();
-    for(i=0;i<=f.length-1;i++)
-    {   if(f.elements[i].type=='checkbox')
-        {   if(f.elements[i].checked==true)
-            {   datos[j]=f.elements[i].value;
-                j=j+1;
-            }
-        }
-    }
-    if(j==0)
-    {   alert('Debe seleccionar al menos una salida para proceder al registro del despacho.');
-    }
-    else
-    {   location.href='registrar_datosdespacho.php?datos='+datos+'&tipo_material=1&grupo_salida=2';
-    }
-}
-function llamar_preparado(f, estado_preparado, codigo_salida)
-{   window.open('navegador_detallesalidamateriales.php?codigo_salida='+codigo_salida,'popup','');
-}
-        </script>
+    </script>
     </head>
     <body>
 <?php
@@ -328,15 +219,15 @@ echo "<table class='texto' cellspacing='0' width='90%'>
 //
 echo "<div class='divBotones'>
 		<input type='button' value='Registrar' name='adicionar' class='boton' onclick='enviar_nav()'>
-        <input type='button' value='Editar' class='boton' onclick='editar_salida(this.form)'>
 		<input type='button' value='Buscar' class='boton' onclick='ShowBuscar()'></td>		
+		<input type='button' value='Editar TipoPago/Cliente' class='boton' onclick='editarTipoPago(this.form)'></td>		
 		<input type='button' value='Anular' class='boton2' onclick='anular_salida(this.form)'>
     </div>";
 		
 echo "<div id='divCuerpo'>";
 echo "<center><table class='texto'>";
-echo "<tr><th>&nbsp;</th><th>Nro. Factura</th><th>Fecha/hora<br>Registro Salida</th><th>Tipo de Salida</th>
-	<th>Cliente</th><th>Razon Social</th><th>NIT</th><th>Observaciones</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>";
+echo "<tr><th>&nbsp;</th><th>Tipo Documento</th><th>Nro.</th><th>Fecha/hora<br>Registro Salida</th><th>Tipo de Salida</th>
+	<th>Cliente</th><th>Razon Social</th><th>NIT</th><th>TipoPago</th><th>Observaciones</th><th>&nbsp;</th></tr>";
 	
 echo "<input type='hidden' name='global_almacen' value='$global_almacen' id='global_almacen'>";
 
@@ -344,7 +235,9 @@ $consulta = "
 	SELECT s.cod_salida_almacenes, s.fecha, s.hora_salida, ts.nombre_tiposalida, 
 	(select a.nombre_almacen from almacenes a where a.`cod_almacen`=s.almacen_destino), s.observaciones, 
 	s.estado_salida, s.nro_correlativo, s.salida_anulada, s.almacen_destino, 
-	(select c.nombre_cliente from clientes c where c.cod_cliente = s.cod_cliente), s.cod_tipo_doc, razon_social, nit
+	(select c.nombre_cliente from clientes c where c.cod_cliente = s.cod_cliente), s.cod_tipo_doc, razon_social, nit,
+	(select abreviatura from tipos_docs where codigo=s.cod_tipo_doc),
+	(select t.nombre_tipopago from tipos_pago t where t.cod_tipopago=s.cod_tipopago)as tipopago
 	FROM salida_almacenes s, tipos_salida ts 
 	WHERE s.cod_tiposalida = ts.cod_tiposalida AND s.cod_almacen = '$global_almacen' and s.cod_tiposalida=1001 ";
 
@@ -354,7 +247,7 @@ if($txtnroingreso!="")
 if($fecha1!="" && $fecha2!="")
    {$consulta = $consulta."AND '$fecha1'<=s.fecha AND s.fecha<='$fecha2' ";
    }
-$consulta = $consulta."ORDER BY s.fecha desc, s.nro_correlativo DESC limit 0, 50 ";
+$consulta = $consulta."ORDER BY s.fecha desc, s.cod_tipo_doc, s.nro_correlativo DESC limit 0, 50 ";
 
 //
 $resp = mysql_query($consulta);
@@ -376,6 +269,8 @@ while ($dat = mysql_fetch_array($resp)) {
 	$codTipoDoc=$dat[11];
 	$razonSocial=$dat[12];
 	$nitCli=$dat[13];
+	$nombreTipoDoc=$dat[14];
+	$nombreTipoPago=$dat[15];
 	
     echo "<input type='hidden' name='fecha_salida$nro_correlativo' value='$fecha_salida_mostrar'>";
 	
@@ -394,20 +289,24 @@ while ($dat = mysql_fetch_array($resp)) {
     //echo "<tr><td><input type='checkbox' name='codigo' value='$codigo'></td><td align='center'>$fecha_salida_mostrar</td><td>$nombre_tiposalida</td><td>$nombre_ciudad</td><td>$nombre_almacen</td><td>$nombre_funcionario</td><td>&nbsp;$obs_salida</td><td>$txt_detalle</td></tr>";
     echo "<tr>";
     echo "<td align='center'>&nbsp;$chk</td>";
+    echo "<td align='center'>$nombreTipoDoc</td>";
     echo "<td align='center'>$nro_correlativo</td>";
     echo "<td align='center'>$fecha_salida_mostrar $hora_salida</td>";
     echo "<td>$nombre_tiposalida</td>";
-    echo "<td>&nbsp;$nombreCliente</td><td>&nbsp;$razonSocial</td><td>&nbsp;$nitCli</td><td>&nbsp;$obs_salida</td>";
+    echo "<td>&nbsp;$nombreCliente</td><td>&nbsp;$razonSocial</td><td>&nbsp;$nitCli</td>
+	<td>$nombreTipoPago</td>
+    <td>&nbsp;$obs_salida</td>";
     $url_notaremision = "navegador_detallesalidamuestras.php?codigo_salida=$codigo";    
-    echo "<td bgcolor='$color_fondo'><a href='javascript:llamar_preparado(this.form, $estado_preparado, $codigo)'>
-		<img src='imagenes/icon_detail.png' width='30' border='0' title='Detalle'></a></td>";
+    
 	if($codTipoDoc==1){
-		echo "<td  bgcolor='$color_fondo'><a href='formatoFactura.php?codVenta=$codigo' target='_BLANK'><img src='imagenes/factura1.jpg' width='30' border='0' title='Factura Formato Pequeño'></a></td>";
-	}else{
-		echo "<td  bgcolor='$color_fondo'><a href='formatoNotaRemision.php?codVenta=$codigo' target='_BLANK'><img src='imagenes/factura1.jpg' width='30' border='0' title='Factura Formato Pequeño'></a></td>";
+		echo "<td bgcolor='$color_fondo'><a href='formatoFactura.php?codVenta=$codigo' target='_BLANK'><img src='imagenes/factura1.jpg' width='30' border='0' title='Factura Formato Pequeño'></a></td>";
+	}
+	else{
+		echo "<td bgcolor='$color_fondo'><a href='formatoNotaRemision.php?codVenta=$codigo' target='_BLANK'><img src='imagenes/factura1.jpg' width='30' border='0' title='Factura Formato Pequeño'></a></td>";
 	}
 	
-	echo "<td  bgcolor='$color_fondo'><a href='notaSalida.php?codVenta=$codigo' target='_BLANK'><img src='imagenes/factura1.jpg' width='30' border='0' title='Factura Formato Grande'></a></td>";
+	/*echo "<td  bgcolor='$color_fondo'><a href='notaSalida.php?codVenta=$codigo' target='_BLANK'><img src='imagenes/factura1.jpg' width='30' border='0' title='Factura Formato Grande'></a></td>";*/
+	
 	echo "</tr>";
 }
 echo "</table></center><br>";
@@ -415,8 +314,8 @@ echo "</div>";
 
 echo "<div class='divBotones'>
 		<input type='button' value='Registrar' name='adicionar' class='boton' onclick='enviar_nav()'>
-        <input type='button' value='Editar' class='boton' onclick='editar_salida(this.form)'>
 		<input type='button' value='Buscar' class='boton' onclick='ShowBuscar()'></td>		
+		<input type='button' value='Editar Tipo Pago' class='boton' onclick='editarTipoPago(this.form)'></td>		
 		<input type='button' value='Anular' class='boton2' onclick='anular_salida(this.form)'>
     </div>";
 	
@@ -482,8 +381,8 @@ echo "</form>";
 			</tr>			
 		</table>	
 		<center>
-			<input type='button' value='Buscar' onClick="ajaxBuscarVentas(this.form)">
-			<input type='button' value='Cancelar' onClick="HiddenBuscar()">
+			<input type='button' class="boton" value='Buscar' onClick="ajaxBuscarVentas(this.form)">
+			<input type='button' class="boton2" value='Cancelar' onClick="HiddenBuscar()">
 			
 		</center>
 	</div>

@@ -5,7 +5,7 @@ require("../../estilos_almacenes.inc");
 
 echo "<center>";
 
-echo "<h1>Distribuidores</h1>";
+echo "<h1>Proveedores</h1>";
 echo "<table class='texto'>";
 echo "<tr>";
 echo "<th>&nbsp;</th><th>Nombre</th><th>Direccion</th><th>Telefono 1</th><th>Telefono 2</th><th>Contacto</th><th>Lineas</th>";

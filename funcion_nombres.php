@@ -85,6 +85,36 @@ function nombreCliente($codigo)
 	return($nombre);
 }
 
+function nameClientes($codigo){
+   $sql="SELECT nombre_cliente FROM clientes where cod_cliente in ($codigo)";
+   $resp = mysql_query($sql);
+   $cadena="";
+   while ($dat=mysql_fetch_array($resp)) {
+      $cadena=$cadena."-".$dat[0];
+   }
+   return($cadena);
+}
+
+function nameOrigenPedido($codigo){
+   $sql="SELECT nombre FROM tipos_origenpedido where codigo in ($codigo)";
+   $resp = mysql_query($sql);
+   $cadena="";
+   while ($dat=mysql_fetch_array($resp)) {
+      $cadena=$cadena."-".$dat[0];
+   }
+   return($cadena);
+}
+
+function nameTiposPago($codigo){
+   $sql="SELECT nombre_tipopago FROM tipos_pago where cod_tipopago in ($codigo)";
+   $resp = mysql_query($sql);
+   $cadena="";
+   while ($dat=mysql_fetch_array($resp)) {
+      $cadena=$cadena."-".$dat[0];
+   }
+   return($cadena);
+}
+
 function nombreProveedor($codigo){
 	$sql="select nombre_proveedor from proveedores where cod_proveedor='$codigo'";
 	$resp=mysql_query($sql);

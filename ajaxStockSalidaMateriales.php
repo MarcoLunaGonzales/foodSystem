@@ -7,6 +7,12 @@ $indice = $_GET["indice"];
 
 //
 require("conexion.inc");
+
+//SACAMOS LA CONFIGURACION PARA LA  VALIDACION DE STOCKS
+$sqlConf="select valor_configuracion from configuraciones where id_configuracion=4";
+$respConf=mysql_query($sqlConf);
+$banderaValidacionStock=mysql_result($respConf,0,0);
+
 $cadRespuesta="";
 $consulta="
     SELECT SUM(id.cantidad_restante) as total
@@ -22,7 +28,15 @@ if($cadRespuesta=="")
 
 $cadRespuesta=redondear2($cadRespuesta);
 
-echo "<input type='text' id='stock$indice' name='stock$indice' value='$cadRespuesta' readonly size='4'>";
+//PREGUNTAMOS SI EL ITEM ES UNA PREPARACION SI ES ASI PONEMOS EL STOCK EN (-) PARA DIFERENCIARLO
+$sqlVeri="select cod_tipomaterial from material_apoyo where codigo_material='$codMaterial'";
+$respVeri=mysql_query($sqlVeri);
+$tipoMaterial=mysql_result($respVeri,0,0);
+if(($tipoMaterial==3 || $tipoMaterial==4) || $banderaValidacionStock!=1){
+	echo "<input type='text' id='stock$indice' name='stock$indice' value='-' readonly size='4'>";
+}else{
+	echo "<input type='text' id='stock$indice' name='stock$indice' value='$cadRespuesta' readonly size='4'>";
+}
 //echo "$cadRespuesta -> ".rand(0, 10);
 //
 

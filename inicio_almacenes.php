@@ -13,6 +13,6 @@
 </style>
 <?php
 	echo "<div class='centrarimagen'>
-		<img src='imagenes/team3.jpg' width='560px' heigth='370px'>
+		<img src='imagenes/pizzero2.jpg' width='300px'>
 	</div>";
 ?>

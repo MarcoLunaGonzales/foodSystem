@@ -5,6 +5,7 @@ $precio1=$_GET['precio1'];
 $precio2=$_GET['precio2'];
 $precio3=$_GET['precio3'];
 $precio4=$_GET['precio4'];
+$precio4=$_GET['precio5'];
 
 	$sqlDel="delete from precios where codigo_material=$item";
 	$respDel=mysql_query($sqlDel);
@@ -19,6 +20,9 @@ $precio4=$_GET['precio4'];
 	$respInsert=mysql_query($sqlInsert);
 	
 	$sqlInsert="insert into precios values($item, 4,$precio4)";
+	$respInsert=mysql_query($sqlInsert);
+
+	$sqlInsert="insert into precios values($item, 5,$precio5)";
 	$respInsert=mysql_query($sqlInsert);
 
 echo "Precio Guardado!";

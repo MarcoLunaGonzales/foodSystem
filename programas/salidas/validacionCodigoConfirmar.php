@@ -30,8 +30,8 @@ if($clave==$claveGenerada)
     echo "OK";
    }
 else
-   {//echo "ERROR_"."_$clave"."_$claveGenerada"."_";
-    echo "ERROR";
+   {echo "ERROR_"."_$clave"."_$claveGenerada"."_";
+    ///echo "ERROR";
    }
 
 ?>

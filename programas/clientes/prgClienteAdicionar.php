@@ -9,7 +9,9 @@ $tel1 = $_GET["tel1"];
 $mail = $_GET["mail"];
 $area = $_GET["area"];
 $fact = $_GET["fact"];
-$tipoPrecio=$_GET["tipo_precio"];
+$tipoPrecio=$_GET["tipoprecio"];
+$tipoCliente=$_GET["tipocliente"];
+
 
 $nomCli = str_replace("'", "''", $nomCli);
 $nit = str_replace("'", "''", $nit);
@@ -20,8 +22,8 @@ $area = $area;
 $fact = str_replace("'", "''", $fact);
 
 $consulta="
-INSERT INTO clientes (cod_cliente, nombre_cliente, nit_cliente, dir_cliente, telf1_cliente, email_cliente, cod_area_empresa, nombre_factura, cod_tipo_precio)
-VALUES ( (SELECT ifnull(max(c.cod_cliente),0)+1 FROM clientes c) , '$nomCli', '$nit', '$dir', '$tel1', '$mail', $area, '$fact', '$tipoPrecio')
+INSERT INTO clientes (cod_cliente, nombre_cliente, nit_cliente, dir_cliente, telf1_cliente, email_cliente, cod_area_empresa, nombre_factura, cod_tipo_precio, cod_tipocliente)
+VALUES ( (SELECT ifnull(max(c.cod_cliente),0)+1 FROM clientes c) , '$nomCli', '$nit', '$dir', '$tel1', '$mail', $area, '$fact', '$tipoPrecio','$tipoCliente')
 ";
 $resp=mysql_query($consulta);
 if($resp) {

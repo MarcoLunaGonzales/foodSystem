@@ -70,17 +70,17 @@ echo "<script language='Javascript'>
 	echo "<form method='post' action=''>";
 	$sql="select cod_tipomaterial, nombre_tipomaterial, obs_tipomaterial from tipos_material order by nombre_tipomaterial";
 	$resp=mysql_query($sql);
-	echo "<h1>Registro de Tipos de Materiales</h1>";
+	echo "<h1>Registro de Tipos de Producto</h1>";
 	
-	echo "<div class='divBotones'>
+	/*echo "<div class='divBotones'>
 	<input type='button' value='Adicionar' name='adicionar' class='boton' onclick='enviar_nav()'>
 	<input type='button' value='Editar' name='Editar' class='boton' onclick='editar_nav(this.form)'>
 	<input type='button' value='Eliminar' name='eliminar' class='boton2' onclick='eliminar_nav(this.form)'>
 	</div>";
-	
+	*/
 	
 	echo "<center><table class='texto'>";
-	echo "<tr><th>&nbsp;</th><th>Nombre de Tipo de Material</th><th>Definición de Tipo de Material</th></tr>";
+	echo "<tr><th>&nbsp;</th><th>Tipo</th><th>Definicion</th></tr>";
 	while($dat=mysql_fetch_array($resp))
 	{
 		$codigo=$dat[0];
@@ -90,11 +90,11 @@ echo "<script language='Javascript'>
 	}
 	echo "</table></center><br>";
 	
-	echo "<div class='divBotones'>
+	/*echo "<div class='divBotones'>
 	<input type='button' value='Adicionar' name='adicionar' class='boton' onclick='enviar_nav()'>
 	<input type='button' value='Editar' name='Editar' class='boton' onclick='editar_nav(this.form)'>
 	<input type='button' value='Eliminar' name='eliminar' class='boton2' onclick='eliminar_nav(this.form)'>
 	</div>";
-	
+	*/
 	echo "</form>";
 ?>

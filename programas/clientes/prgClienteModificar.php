@@ -10,6 +10,8 @@ $tel1 = $_GET["tel1"];
 $mail = $_GET["mail"];
 $area = $_GET["area"];
 $fact = $_GET["fact"];
+$tipoPrecio=$_GET["tipoprecio"];
+$tipoCliente=$_GET["tipocliente"];
 
 $nomCli = str_replace("'", "''", $nomCli);
 $nit = str_replace("'", "''", $nit);
@@ -27,9 +29,12 @@ $consulta="
     telf1_cliente = '$tel1',
     email_cliente = '$mail',
     cod_area_empresa = $area,
-    nombre_factura = '$fact'
+    nombre_factura = '$fact',
+	cod_tipo_precio='$tipoPrecio',
+	cod_tipocliente='$tipoCliente'
     WHERE cod_cliente = $codCli
 ";
+//echo $consulta;
 $resp=mysql_query($consulta);
 if($resp) {
     echo "<script type='text/javascript' language='javascript'>alert('Se ha modificado el cliente.');listadoClientes();</script>";

@@ -37,7 +37,8 @@ if ($num_filas != 0) {
 	
 	if($cod_cargo==1000){
 		header("location:index_administracion.html");
-	}else{
+	}
+	if($cod_cargo==1001 || $cod_cargo==1002){
 		header("location:indexAlmacenReg.php");
 	}
 	

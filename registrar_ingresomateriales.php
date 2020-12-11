@@ -50,7 +50,7 @@ function listaMateriales(f){
 	var nombreItem=f.itemNombreMaterial.value;
 	contenedor = document.getElementById('divListaMateriales');
 	ajax=nuevoAjax();
-	ajax.open("GET", "ajaxListaMateriales.php?codTipo="+codTipo+"&nombreItem="+nombreItem,true);
+	ajax.open("GET", "ajaxListaMaterialesIngreso.php?codTipo="+codTipo+"&nombreItem="+nombreItem,true);
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
 			contenedor.innerHTML = ajax.responseText;
@@ -101,9 +101,9 @@ function fun13(cadIdOrg,cadIdDes)
     document.getElementById(cadIdDes).value=num;
 }
 
-	num=0;
+num=0;
 
-	function mas(obj) {
+function mas(obj) {
 
   		num++;
 		fi = document.getElementById('fiel');

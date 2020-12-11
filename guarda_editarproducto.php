@@ -5,29 +5,26 @@ require("estilos.inc");
 //recogemos variables
 $codProducto=$_POST['codProducto'];
 $nombreProducto=$_POST['material'];
-$codLinea=$_POST['codLinea'];
-$codForma=$_POST['codForma'];
-$codEmpaque=$_POST['codEmpaque'];
-$cantidadPresentacion=$_POST['cantidadPresentacion'];
-$principioActivo=$_POST['principioActivo'];
-$codTipoVenta=$_POST['codTipoVenta'];
+$nombreProducto = strtoupper($nombreProducto);
 
-$arrayAccionTerapeutica=$_POST['arrayAccionTerapeutica'];
+$codLinea=$_POST['codLinea'];
+$codGrupo=$_POST['cod_grupo'];
+$codTipo=$_POST['cod_tipo'];
+$observaciones=$_POST['observaciones'];
+$codUnidad=$_POST['cod_unidad'];
+$precioProducto=$_POST['precio_producto'];
 
 
 $sql_inserta="update material_apoyo set descripcion_material='$nombreProducto', cod_linea_proveedor='$codLinea', 
-cod_forma_far='$codForma', cod_empaque='$codEmpaque', cantidad_presentacion='$cantidadPresentacion', 
-principio_activo='$principioActivo', cod_tipoventa='$codTipoVenta' where codigo_material='$codProducto'";
+cod_grupo='$codGrupo', cod_tipomaterial='$codTipo', observaciones='$observaciones', 
+cod_unidad='$codUnidad'  where codigo_material='$codProducto'";
 $resp_inserta=mysql_query($sql_inserta);
 
-$sqlDel="delete from material_accionterapeutica where codigo_material='$codProducto'";
+//insertamos los precios
+$sqlDel="delete from precios where codigo_material=$codProducto";
 $respDel=mysql_query($sqlDel);
-$vectorAccionTer=explode(",",$arrayAccionTerapeutica);
-$n=sizeof($vectorAccionTer);
-for($i=0;$i<$n;$i++){
-	$sql="insert into material_accionterapeutica (codigo_material, cod_accionterapeutica) values('$codProducto','$vectorAccionTer[$i]')";
-	$resp=mysql_query($sql);
-}
+$sqlInsertPrecio="insert into precios values($codProducto, 1,$precioProducto)";
+$respInsertPrecio=mysql_query($sqlInsertPrecio);
 
 if($resp_inserta){
 		echo "<script language='Javascript'>

@@ -16,12 +16,14 @@ echo "<div class='divBotones'>
 echo "<center>";
 echo "<table class='texto'>";
 echo "<tr>";
-echo "<th>&nbsp;</th><th>Cliente</th><th>NIT</th><th>Direccion</th><th>Ciudad</th>";
+echo "<th>&nbsp;</th><th>Cliente</th><th>Tipo Cliente</th><th>NIT</th><th>Direccion</th><th>Ciudad</th><th>Precio</th>";
 echo "</tr>";
 $consulta="
-    SELECT c.cod_cliente, c.nombre_cliente, c.nit_cliente, c.dir_cliente, c.cod_area_empresa, a.descripcion
+    SELECT c.cod_cliente, c.nombre_cliente, c.nit_cliente, c.dir_cliente, c.cod_area_empresa, a.descripcion,
+	(select tc.nombre from tipos_cliente tc where tc.codigo=c.cod_tipocliente)tipocliente, 
+	(select tp.nombre from tipos_precio tp where tp.codigo=c.cod_tipo_precio)tipoprecio 
     FROM clientes AS c INNER JOIN ciudades AS a ON c.cod_area_empresa = a.cod_ciudad 
-    WHERE 1 = 1 ORDER BY c.nombre_cliente ASC
+     ORDER BY c.nombre_cliente ASC
 ";
 $rs=mysql_query($consulta);
 $cont=0;
@@ -33,8 +35,20 @@ while($reg=mysql_fetch_array($rs))
     $dirCliente = $reg["dir_cliente"];
     $codArea = $reg["cod_area_empresa"];
     $nomArea = $reg["descripcion"];
+	$tipoCliente=$reg["tipocliente"];
+	$tipoPrecio=$reg["tipoprecio"];
+	
+	
     echo "<tr>";
-    echo "<td><input type='checkbox' id='idchk$cont' value='$codCliente' ></td><td>$nomCliente</td><td>$nitCliente</td><td>$dirCliente</td><td>$nomArea</td>";
+    echo "<td>
+	<input type='checkbox' id='idchk$cont' value='$codCliente' ></td>
+	<td>$nomCliente</td>
+	<td>$tipoCliente</td>
+	<td>$nitCliente</td>
+	<td>$dirCliente</td>
+	<td>$nomArea</td>
+	<td>$tipoPrecio</td>
+	";
     echo "</tr>";
    }
 echo "</table>";

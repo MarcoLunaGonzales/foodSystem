@@ -14,6 +14,18 @@ h1 {
 	text-align: center;
 }
 
+h2 {
+    display: block;
+    font-size: 10pt;
+    -webkit-margin-before: 0.83em;
+    -webkit-margin-after: 0.83em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-family: Verdana;
+	color: #585858;
+	text-align: center;
+}
+
 table {
     *border-collapse: collapse; /* IE7 and lower */
     border-spacing: 0;
@@ -174,7 +186,16 @@ font-family: sans-serif, Arial;
     border-radius: 0 0 6px 6px
 }
 
-
+.textomediano{
+	font-family: sans-serif, Arial;
+	font-size: 8pt;
+	color: #000000;
+}
+.textomediano td, .textomediano th {
+    padding: 2px;
+    border-bottom: 1px solid #000000;    
+	border-right: 1px solid #000000;    
+}
 
 a:link {
 	font-family: Verdana, Arial;
@@ -218,7 +239,7 @@ a:active {
 }
 .textograndenegro {
 	font-family: Verdana;
-	font-size: 14pt;
+	font-size: 15pt;
 	color: #585858;
 }
 .textogranderojo {

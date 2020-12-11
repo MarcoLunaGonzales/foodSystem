@@ -24,7 +24,7 @@ include("datosUsuario.php");
 <div id="page">
 	<div class="header">
 		<a href="#menu"><span></span></a>
-		Minka Farmacia
+		FoodSystem [PizzAventura]
 		<div style="position:absolute; width:95%; height:50px; text-align:right; top:0px; font-size: 9px; font-weight: bold; color: #fff;">
 			[<? echo $fechaSistemaSesion?>][<? echo $horaSistemaSesion;?>]			
 		<div>
@@ -41,30 +41,34 @@ include("datosUsuario.php");
 	
 	<nav id="menu">
 		<ul>
+
 			<li><span>Datos Generales</span>
 				<ul>
-					<li><a href="programas/proveedores/inicioProveedores.php" target="contenedorPrincipal">Distribuidores</a></li>
-					<li><a href="navegador_material.php" target="contenedorPrincipal">Productos</a></li>
+					<li><a href="programas/proveedores/inicioProveedores.php" target="contenedorPrincipal">Proveedores</a></li>
+					<li><span>Gestion de Productos</span>
+						<ul>
+							<li><a href="navegador_tiposmaterial.php" target="contenedorPrincipal">Tipos de Producto</a></li>
+							<li><a href="tamanios/list.php" target="contenedorPrincipal">Tamaños</a></li>
+							<li><a href="navegador_grupos.php" target="contenedorPrincipal">Grupos</a></li>
+							<li><a href="navegador_material.php" target="contenedorPrincipal">Insumos y productos</a></li>
+							<li><a href="navegador_recetas.php" target="contenedorPrincipal">Preparaciones</a></li>
+							<li><a href="navegador_combos.php" target="contenedorPrincipal">Combos</a></li>
+							<li><a href="navegador_precios.php" target="contenedorPrincipal">Precios</a></li>
+						</ul>
+					</li>
 					<li><a href="navegador_funcionarios1.php" target="contenedorPrincipal">Funcionarios</a></li>
 					<li><a href="programas/clientes/inicioClientes.php" target="contenedorPrincipal">Clientes</a></li>
+					<li><a href="navegador_dosificaciones.php" target="contenedorPrincipal">Dosificaciones de Facturas</a></li>
 					<!--li><a href="navegador_vehiculos.php" target="contenedorPrincipal">Vehiculos</a></li-->
-				</ul>	
-			</li>
-			<li><span>Materiales, Gestion de Almacenes y Precios</span>
-				<ul>
-					<li><a href="navegador_almacenes.php" target="contenedorPrincipal">Almacenes</a></li>
-					<li><a href="navegador_tiposingreso.php" target="contenedorPrincipal">Tipos de Ingreso</a></li>
-					<li><a href="navegador_tipossalida.php" target="contenedorPrincipal">Tipos de Salida</a></li>
-					<li><a href="navegador_precios.php" target="contenedorPrincipal">Precios</a></li>
-					
-				</ul>	
-			</li>
-			<li><span>Ordenes de Compra</span>
-				<ul>
-					<li><a href="navegador_ordenCompra.php" target="contenedorPrincipal">Registro de O.C.</a></li>
-					<!--li><a href="registrarOCTerceros.php" target="contenedorPrincipal">Registro de O.C. de Terceros</a></li-->
-					<!--li><a href="navegadorIngresosOC.php" target="contenedorPrincipal">Generar OC a traves de Ingreso</a></li-->
-					<li><a href="navegador_pagos.php" target="contenedorPrincipal">Registro de Pagos</a></li>
+					<li><span>Gestion de Almacenes</span>
+						<ul>
+							<li><a href="navegador_almacenes.php" target="contenedorPrincipal">Almacenes</a></li>
+							<li><a href="navegador_tiposingreso.php" target="contenedorPrincipal">Tipos de Ingreso</a></li>
+							<li><a href="navegador_tipossalida.php" target="contenedorPrincipal">Tipos de Salida</a></li>
+							
+						</ul>	
+					</li>		
+					<li><a href="navegador_tiposgasto.php" target="contenedorPrincipal">Tipos de Gasto</a></li>				
 				</ul>	
 			</li>
 			<li><span>Ingresos</span>
@@ -73,7 +77,7 @@ include("datosUsuario.php");
 					<!--li><a href="navegadorLiquidacionIngresos.php" target="contenedorPrincipal">Liquidacion de Ingresos</a></li-->
 				</ul>	
 			</li>
-			<li><span>Salidas</span>
+			<li><span>Ventas & Facturacion</span>
 				<ul>
 					<li><a href="navegador_salidamateriales.php" target="contenedorPrincipal">Listado de Traspasos</a></li>
 					<li><a href="navegadorVentas.php" target="contenedorPrincipal">Listado de Ventas</a></li>
@@ -89,6 +93,11 @@ include("datosUsuario.php");
 					<li><a href="navegadorDolar.php" target="contenedorPrincipal">Cambiar Cotizacion de Dolar</a></li>
 				</ul>	
 			</li-->
+			<li><a href="navegador_aperturacajachica.php" target="contenedorPrincipal">Apertura Caja Chica</a></li>
+			<li><a href="navegador_gastos.php" target="contenedorPrincipal">Gastos</a></li>			
+			<li><a href="navegador_consumos.php" target="_blank">Consumo en Sala</a></li>
+			<li><a href="registrar_salidaventas.php" target="contenedorPrincipal">Vender / Facturar</a></li>
+			
 			
 			<li><span>Reportes</span>
 				<ul>
@@ -118,6 +127,24 @@ include("datosUsuario.php");
 							<!--li><a href="rptOpKardexCliente.php" target="contenedorPrincipal">Kardex x Cliente</a></li-->
 						</ul>	
 					</li>
+					<li><span>Reportes Contables</span>
+						<ul>
+							<li><a href="rptOpLibroVentas.php" target="contenedorPrincipal">Libro de Ventas</a></li>
+							<!--li><a href="" target="contenedorPrincipal">Libro de Compras</a></li>
+							<li><a href="rptOpKardexCliente.php" target="contenedorPrincipal">Kardex x Cliente</a></li-->
+						</ul>	
+					</li>
+					<li><a href="rptOpArqueoDiario.php" target="contenedorPrincipal">Arqueo de Caja Diario</a></li>
+
+					<li><span>Administrativos</span>
+						<ul>
+							<li><a href="rptOpArqueoDiario.php?variableAdmin=1" target="contenedorPrincipal">Arqueo de Caja Diario</a></li>
+							<li><a href="rptOpVentasDocumento.php?variableAdmin=1" target="contenedorPrincipal">Ventas x Documento</a></li>
+							<li><a href="rptOpVentasxItem.php?variableAdmin=1" target="contenedorPrincipal">Ventas x Item</a></li>
+
+						</ul>	
+					</li>
+					
 					<!--li><span>Utilidades</span>
 						<ul>
 							<li><a href="rptOpUtilidadesDocumento.php" target="contenedorPrincipal">Utilidades x Documento</a></li>
@@ -131,7 +158,11 @@ include("datosUsuario.php");
 						</ul>	
 					</li-->
 				</ul>
-			</li>			
+			</li>
+			
+
+	</ul>
+			
 	</nav>
 </div>
 	</body>

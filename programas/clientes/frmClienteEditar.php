@@ -12,16 +12,16 @@ $email      = "";
 $codArea    = "";
 $nomFactura = "";
 $nomArea    = "";
-$cadComboCiudad = "";
+
 $consulta="
-    SELECT c.cod_cliente, c.nombre_cliente, c.nit_cliente, c.dir_cliente, c.telf1_cliente, c.email_cliente, c.cod_area_empresa, c.nombre_factura, a.cod_ciudad, a.descripcion
+    SELECT c.cod_cliente, c.nombre_cliente, c.nit_cliente, c.dir_cliente, c.telf1_cliente, c.email_cliente, c.cod_area_empresa, c.nombre_factura, a.cod_ciudad, a.descripcion, c.cod_tipo_precio, c.cod_tipocliente
     FROM clientes AS c INNER JOIN ciudades AS a ON c.cod_area_empresa = a.cod_ciudad
     WHERE c.cod_cliente = $codCliente ORDER BY c.nombre_cliente ASC
 ";
 $rs=mysql_query($consulta);
 $nroregs=mysql_num_rows($rs);
-if($nroregs==1)
-   {$reg=mysql_fetch_array($rs);
+if($nroregs==1){
+	$reg=mysql_fetch_array($rs);
     //$codCliente = $reg["cod_cliente"];
     $nomCliente = $reg["nombre_cliente"];
     $nitCliente = $reg["nit_cliente"];
@@ -31,18 +31,49 @@ if($nroregs==1)
     $codArea    = $reg["cod_area_empresa"];
     $nomFactura = $reg["nombre_factura"];
     $nomArea    = $reg["descripcion"];
+	$codTipoPrecio=$reg["cod_tipo_precio"];
+	$codTipoCliente=$reg["cod_tipocliente"];
+	
+	$cadComboCiudad = "";
     $consulta="SELECT c.cod_ciudad, c.descripcion FROM ciudades AS c WHERE 1 = 1 ORDER BY c.descripcion ASC";
     $rs=mysql_query($consulta);
-    while($reg=mysql_fetch_array($rs))
-       {$codCiudad = $reg["cod_ciudad"];
+    while($reg=mysql_fetch_array($rs)){
+		$codCiudad = $reg["cod_ciudad"];
         $nomCiudad = $reg["descripcion"];
         if($codArea==$codCiudad) {
             $cadComboCiudad=$cadComboCiudad."<option value='$codCiudad' selected>$nomCiudad</option>";
-        } else {
+        }else{
             $cadComboCiudad=$cadComboCiudad."<option value='$codCiudad'>$nomCiudad</option>";
         }
-       }
-   }
+    }
+	
+	$cadComboPrecio="";
+	$consulta="select t.`codigo`, t.`nombre` from `tipos_precio` t";
+    $rs=mysql_query($consulta);
+    while($reg=mysql_fetch_array($rs)){
+		$codigo = $reg["codigo"];
+        $nombre = $reg["nombre"];
+        if($codigo==$codTipoPrecio) {
+            $cadComboPrecio=$cadComboPrecio."<option value='$codigo' selected>$nombre</option>";
+        }else{
+            $cadComboPrecio=$cadComboPrecio."<option value='$codigo'>$nombre</option>";
+        }
+    }
+	
+	$cadComboCliente="";
+	$consulta="select t.`codigo`, t.`nombre` from `tipos_cliente` t";
+    $rs=mysql_query($consulta);
+    while($reg=mysql_fetch_array($rs)){
+		$codigo = $reg["codigo"];
+        $nombre = $reg["nombre"];
+        if($codigo==$codTipoCliente) {
+            $cadComboCliente=$cadComboCliente."<option value='$codigo' selected>$nombre</option>";
+        }else{
+            $cadComboCliente=$cadComboCliente."<option value='$codigo'>$nombre</option>";
+        }
+    }
+
+}
 
 ?>
 <center>
@@ -66,12 +97,16 @@ if($nroregs==1)
         <tr>
             <th>Correo</th>
             <th>Factura</th>
-            <th colspan="3">Ciudad</th>
+            <th>Ciudad</th>
+            <th>Tipo Cliente</th>
+            <th>Precio</th>
         </tr>
         <tr>
             <td><input type="text" id="mail" value="<?php echo "$email"; ?>"/></td>
             <td><input type="text" id="fact" value="<?php echo "$nomFactura"; ?>"/></td>
-            <td colspan="3"><select id="area"><?php echo "$cadComboCiudad"; ?></select></td>
+            <td><select id="area"><?php echo "$cadComboCiudad"; ?></select></td>
+            <td><select id="tipo_cliente"><?php echo "$cadComboCliente"; ?></select></td>
+            <td><select id="tipo_precio"><?php echo "$cadComboPrecio"; ?></select></td>
         </tr>
     </table>
     <br/>

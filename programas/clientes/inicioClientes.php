@@ -65,7 +65,9 @@ function adicionarCliente() {
     var mail = $("#mail").val();
     var area = $("#area").val();
     var fact = $("#fact").val();
-    var parms="nomcli="+nomcli+"&nit="+nit+"&dir="+dir+"&tel1="+tel1+"&mail="+mail+"&area="+area+"&fact="+fact+"";
+	var tipoprecio = $("#tipo_precio").val();
+	var tipocliente = $("#tipo_cliente").val();
+    var parms="nomcli="+nomcli+"&nit="+nit+"&dir="+dir+"&tel1="+tel1+"&mail="+mail+"&area="+area+"&fact="+fact+"&tipoprecio="+tipoprecio+"&tipocliente="+tipocliente;
     cargarPnl("#pnl00","prgClienteAdicionar.php",parms);
 }
 function modificarCliente() {
@@ -77,7 +79,9 @@ function modificarCliente() {
     var mail = $("#mail").val();
     var area = $("#area").val();
     var fact = $("#fact").val();
-    var parms="codcli="+codcli+"&nomcli="+nomcli+"&nit="+nit+"&dir="+dir+"&tel1="+tel1+"&mail="+mail+"&area="+area+"&fact="+fact+"";
+	var tipoprecio = $("#tipo_precio").val();
+	var tipocliente = $("#tipo_cliente").val();
+    var parms="codcli="+codcli+"&nomcli="+nomcli+"&nit="+nit+"&dir="+dir+"&tel1="+tel1+"&mail="+mail+"&area="+area+"&fact="+fact+"&tipoprecio="+tipoprecio+"&tipocliente="+tipocliente;
     cargarPnl("#pnl00","prgClienteModificar.php",parms);
 }
 function eliminarCliente(cods) {

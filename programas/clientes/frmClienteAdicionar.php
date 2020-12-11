@@ -32,6 +32,15 @@ while($reg1=mysql_fetch_array($rs1))
     $cadTipoPrecio=$cadTipoPrecio."<option value='$codTipo'>$nomTipo</option>";
    }
 
+$cadTipoCliente="";
+$consulta1="select t.`codigo`, t.`nombre` from `tipos_cliente` t";
+$rs1=mysql_query($consulta1);
+while($reg1=mysql_fetch_array($rs1))
+   {$codTipo = $reg1["codigo"];
+    $nomTipo = $reg1["nombre"];
+    $cadTipoCliente=$cadTipoCliente."<option value='$codTipo'>$nomTipo</option>";
+   }
+
   
 ?>
 <center>
@@ -56,13 +65,15 @@ while($reg1=mysql_fetch_array($rs1))
         <tr>
             <th>Correo</th>
             <th>Factura</th>
-            <th colspan="2">Ciudad</th>
+            <th>Ciudad</th>
+            <th>Tipo de Cliente</th>
             <th>Tipo de Precio</th>
         </tr>
         <tr>
             <td><input type="text" id="mail" value="<?php echo "$email"; ?>"/></td>
             <td><input type="text" id="fact" value="<?php echo "$nomFactura"; ?>"/></td>
-            <td colspan="2"><select id="area"><?php echo "$cadComboCiudad"; ?></select></td>
+            <td><select id="area"><?php echo "$cadComboCiudad"; ?></select></td>
+            <td><select id="tipo_cliente"><?php echo "$cadTipoCliente"; ?></select></td>
             <td><select id="tipo_precio" name="tipo_precio"><?php echo "$cadTipoPrecio"; ?></select></td>
         </tr>
     </table>

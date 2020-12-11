@@ -1,74 +1,39 @@
 <script language='Javascript'>
-	function validar(f)
-	{
-		if(f.material.value=='')
-		{	alert('El campo Nombre esta vacio.');
-			f.material.focus();
-			return(false);
-		}
-		if(f.codLinea.value=='')
-		{	alert('Debe seleccionar Linea.');
-			f.codLinea.focus();
-			return(false);
-		}
-		if(f.codForma.value=='')
-		{	alert('Debe seleccionar Forma Farmaceutica.');
-			f.codForma.focus();
-			return(false);
-		}
-		if(f.codEmpaque.value=='')
-		{	alert('Debe seleccionar Empaque.');
-			f.codEmpaque.focus();
-			return(false);
-		}
-		if(f.codTipoVenta.value=='')
-		{	alert('Debe seleccionar Tipo de Venta.');
-			f.codTipoVenta.focus();
-			return(false);
-		}
-		
-		
-		var codAccionTerapeutica=new Array();
-		var j=0;
-		for(i=0;i<=f.codAccionTerapeutica.options.length-1;i++)
-		{	if(f.codAccionTerapeutica.options[i].selected)
-			{	codAccionTerapeutica[j]=f.codAccionTerapeutica.options[i].value;
-				j++;
-			}
-		}
-		f.arrayAccionTerapeutica.value=codAccionTerapeutica;
-		
-		f.submit();
-	}
+	
 
 </script>
 
 <head>
-    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link href="autoComplete/tokenize2.css" rel="stylesheet" />
-    <script src="autoComplete/tokenize2.js"></script>
-    <link href="autoComplete/demo.css" rel="stylesheet" />
+
 </head>
 <?php
 require("conexion.inc");
 require('estilos.inc');
+require('funciones.php');
 
 $codProducto=$_GET['cod_material'];
 
-$sqlEdit="select m.codigo_material, m.descripcion_material, m.estado, m.cod_linea_proveedor, m.cod_forma_far, m.cod_empaque, 
-	m.cantidad_presentacion, m.principio_activo, m.cod_tipoventa from material_apoyo m where m.codigo_material='$codProducto'";
+$sqlEdit="select m.codigo_material, m.descripcion_material, m.estado, m.cod_linea_proveedor, m.cod_grupo, m.cod_tipomaterial, 
+	m.observaciones, m.cod_unidad from material_apoyo m where m.codigo_material='$codProducto'";
 $respEdit=mysql_query($sqlEdit);
 while($datEdit=mysql_fetch_array($respEdit)){
 	$nombreProductoX=$datEdit[1];
 	$codLineaX=$datEdit[3];
-	$codFormaX=$datEdit[4];
-	$codEmpaqueX=$datEdit[5];
-	$cantidadPresentacionX=$datEdit[6];
-	$principioActivoX=$datEdit[7];
-	$codTipoVentaX=$datEdit[8];
+	$codGrupoX=$datEdit[4];
+	$codTipoX=$datEdit[5];
+	$observacionesX=$datEdit[6];
+	$codUnidadX=$datEdit[7];
+}
+
+$sqlPrecio="select p.`precio` from `precios` p where p.`cod_precio`=1 and p.`codigo_material`=$codProducto";
+$respPrecio=mysql_query($sqlPrecio);
+$numFilas=mysql_num_rows($respPrecio);
+if($numFilas==1){
+	$precio1=mysql_result($respPrecio,0,0);
+	$precio1=redondear2($precio1);
+}else{
+	$precio1=0;
+	$precio1=redondear2($precio1);
 }
 
 echo "<form action='guarda_editarproducto.php' method='post' name='form1'>";
@@ -89,9 +54,7 @@ $sql1="select pl.cod_linea_proveedor, CONCAT(p.nombre_proveedor,' - ',pl.nombre_
 where p.cod_proveedor=pl.cod_proveedor and pl.estado=1 order by 2;";
 $resp1=mysql_query($sql1);
 echo "<td>
-<div class='container'>
-		<div class='col-md-4'>
-		<select name='codLinea' id='codLinea' class='tokenize-limit-demo2'>
+		<select name='codLinea' id='codLinea' required>
 		<option value=''></option>";
 		while($dat1=mysql_fetch_array($resp1))
 		{	$codLinea=$dat1[0];
@@ -103,27 +66,41 @@ echo "<td>
 			}
 		}
 		echo "</select>
-	</div>
-	</div>
 </td>";
 echo "</tr>";
 
-echo "<tr><th>Forma Farmaceutica</th>";
-$sql1="select f.cod_forma_far, f.nombre_forma_far from formas_farmaceuticas f 
-where f.estado=1 order by 2;";
+echo "<tr><th>Tipo</th>";
+$sql1="select e.cod_tipomaterial, e.nombre_tipomaterial from tipos_material e order by 2;";
 $resp1=mysql_query($sql1);
 echo "<td>
-<div class='container'>
-		<div class='col-md-4'>
-			<select name='codForma' id='codForma' class='tokenize-limit-demo2'>
+			<select name='cod_tipo' id='cod_tipo' required>
+				<option value=''></option>";
+			while($dat1=mysql_fetch_array($resp1))
+			{	$codigo=$dat1[0];
+				$nombre=$dat1[1];
+				if($codigo==$codTipoX){
+					echo "<option value='$codigo' selected>$nombre</option>";
+				}else{
+					echo "<option value='$codigo'>$nombre</option>";
+				}
+			}
+			echo "</select>
+</td>";
+echo "</tr>";
+
+echo "<tr><th>Grupo</th>";
+$sql1="select f.cod_grupo, f.nombre_grupo from grupos f  where f.estado=1 order by 2;";
+$resp1=mysql_query($sql1);
+echo "<td>
+			<select name='cod_grupo' id='cod_grupo' required>
 			<option value=''></option>";
 			while($dat1=mysql_fetch_array($resp1))
-			{	$codForma=$dat1[0];
-				$nombreForma=$dat1[1];
-				if($codForma==$codFormaX){
-					echo "<option value='$codForma' selected>$nombreForma</option>";
+			{	$codigo=$dat1[0];
+				$nombre=$dat1[1];
+				if($codigo==$codGrupoX){
+					echo "<option value='$codigo' selected>$nombre</option>";
 				}else{
-					echo "<option value='$codForma'>$nombreForma</option>";
+					echo "<option value='$codigo'>$nombre</option>";
 				}
 			}
 			echo "</select>
@@ -132,108 +109,42 @@ echo "<td>
 </td>";
 echo "</tr>";
 
-echo "<tr><th>Empaque</th>";
-$sql1="select e.cod_empaque, e.nombre_empaque from empaques e where e.estado=1 order by 2;";
+echo "<tr><th align='left'>Descripcion</th>";
+echo "<td align='left'>
+	<input type='text' class='texto' name='observaciones' id='observaciones' size='80' style='text-transform:uppercase;' value='$observacionesX'>
+	</td>";
+
+
+echo "<tr><th>Unidad de Manejo</th>";
+$sql1="select u.codigo, u.nombre, u.abreviatura from unidades_medida u order by 1;";
 $resp1=mysql_query($sql1);
 echo "<td>
-	<div class='container'>
-		<div class='col-md-4'>
-			<select name='codEmpaque' id='codEmpaque' class='tokenize-limit-demo2'>
-				<option value=''></option>";
-			while($dat1=mysql_fetch_array($resp1))
-			{	$codEmpaque=$dat1[0];
-				$nombreEmpaque=$dat1[1];
-				if($codEmpaque==$codEmpaqueX){
-					echo "<option value='$codEmpaque' selected>$nombreEmpaque</option>";
-				}else{
-					echo "<option value='$codEmpaque'>$nombreEmpaque</option>";					
-				}
-			}
-echo "</select>
-	</div>
-	</div>
-</td>";
-echo "</tr>";
-
-echo "<tr><th>Cantidad Presentacion</th>
-	<td><input type='number' name='cantidadPresentacion' id='cantidadPresentacion' min='1' max='1000' value='$cantidadPresentacionX'></td>
-	</tr>";
-	
-echo "<tr><th>Principio Activo</th>
-	<td><input type='text' name='principioActivo' id='principioActivo' style='text-transform:uppercase;' value='$principioActivoX'></td>
-	</tr>";
-
-echo "<tr><th>Tipo Venta</th>";
-$sql1="select t.cod_tipoventa, t.nombre_tipoventa from tipos_venta t where t.estado=1;";
-$resp1=mysql_query($sql1);
-echo "<td>
-	<div class='container'>
-		<div class='col-md-4'>
-			<select name='codTipoVenta' id='codTipoVenta' class='tokenize-limit-demo2'>
-			<option value=''></option>";
-			while($dat1=mysql_fetch_array($resp1))
-			{	$codTipoVenta=$dat1[0];
-				$nombreTipoVenta=$dat1[1];
-				if($codTipoVenta==$codTipoVentaX){
-					echo "<option value='$codTipoVenta' selected>$nombreTipoVenta</option>";
-				}else{
-					echo "<option value='$codTipoVenta'>$nombreTipoVenta</option>";					
-				}
-			}
-echo "</select>
-	</div>
-	</div>
-</td>";
-echo "</tr>";
-
-
-echo "<tr><th>Accion Terapeutica</th>";
-$sql1="select l.cod_accionterapeutica as value, l.nombre_accionterapeutica as texto from acciones_terapeuticas l;";
-$resp1=mysql_query($sql1);
-echo "<td>
-	<div class='container'>
-		<div class='col-md-6'>
-			<select name='codAccionTerapeutica' id='codAccionTerapeutica' class='tokenize-sample-demo1' multiple>
+			<select name='cod_unidad' id='cod_unidad' required>
 			<option value=''></option>";
 			while($dat1=mysql_fetch_array($resp1))
 			{	$codigo=$dat1[0];
 				$nombre=$dat1[1];
-				$sqlRevisa="select count(*) from material_accionterapeutica m where m.cod_accionterapeutica='$codigo' and 
-				m.codigo_material='$codProducto'";
-				$respRevisa=mysql_query($sqlRevisa);
-				$numRevisa=mysql_result($respRevisa,0,0);
-				if($numRevisa>0){
-					echo "<option value='$codigo' selected>$nombre</option>";
+				$abreviatura=$dat1[2];
+				if($codigo==$codUnidadX){
+					echo "<option value='$codigo' selected>$nombre $abreviatura</option>";
 				}else{
-					echo "<option value='$codigo'>$nombre</option>";
+					echo "<option value='$codigo'>$nombre $abreviatura</option>";
 				}
 			}
-echo "</select>
-	</div>
-	</div>
+			echo "</select>
 </td>";
 echo "</tr>";
-?>	
 
-	<script>
-		$('.tokenize-sample-demo1').tokenize2();
-		$('.tokenize-limit-demo2').tokenize2({
-                tokensMaxItems: 1
-        });
-	</script>
-	
-<?php
-	echo "</td></tr>";
+
+echo "<tr><th align='left'>Precio</th>";
+echo "<td align='left'>
+	<input type='number' class='texto' name='precio_producto' id='precio_producto' value='$precio1' step='0.1'>
+	</td></tr>";
+
 echo "</table></center>";
-echo "<input type='hidden' name='arrayAccionTerapeutica' id='arrayAccionTerapeutica'>";
 echo "<div class='divBotones'>
-<input type='button' class='boton' value='Guardar' onClick='validar(this.form)'>
+<input type='submit' class='boton' value='Guardar'>
 <input type='button' class='boton2' value='Cancelar' onClick='location.href=\"navegador_material.php\"'>
 </div>";
 echo "</form>";
 ?>
-
-<script>
-    $('.tokenize-sample-demo1').tokenize2();
-</script>
-

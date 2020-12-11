@@ -10,7 +10,6 @@
 <?php
 require("../../conexionmysqli.inc");
 require("../../estilos_almacenes.inc");
-
 require("../../funcion_nombres.php");
 
 
